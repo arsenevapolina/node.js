@@ -1,4 +1,4 @@
-const operations = require("./operations");
+const Calculator = require("./calculator");
 
 const args = process.argv.slice(2);
 
@@ -17,17 +17,22 @@ if (isNaN(num1) || isNaN(num2)) {
   process.exit(1);
 }
 
-let result;
+const calculator = new Calculator();
+
+const operationMap = {
+  "+": "add",
+  "-": "subtract",
+  "*": "multiply",
+  "/": "divide",
+};
 
 try {
-  const operationFunction = operations[operation];
-  if (!operationFunction) {
+  const operationName = operationMap[operation];
+  if (!operationName) {
     console.log("Ошибка: Неподдерживаемая операция. Используйте +, -, *, /");
     process.exit(1);
   }
-
-  result = operationFunction(num1, num2);
-  console.log(`Результат: ${num1} ${operation} ${num2} = ${result}`);
+  calculator.executeOperation(operationName, num1, num2);
 } catch (error) {
   console.log("Ошибка:", error.message);
   process.exit(1);
